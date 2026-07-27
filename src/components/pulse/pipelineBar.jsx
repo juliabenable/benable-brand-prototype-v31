@@ -271,10 +271,11 @@ export function PipelineFixedBar({ scene }) {
   );
 }
 
-/* S · Fixed × filters — the P/Q mash-up: R's constant 8-slot subway with
-   Q's interactions. Occupied stops are buttons that FILTER the crew table
-   and carry Q's dark hover tooltip (names + % reached this stage or
-   beyond); empty stages stay hollow nodes. */
+/* S — the P/Q mash-up: P's shape untouched (fluid full-width columns,
+   casting column only while casting) with Q's interactions layered in.
+   Occupied stops are buttons that FILTER the crew table and carry Q's dark
+   hover tooltip (names + % reached this stage or beyond); empty stages
+   stay hollow nodes. */
 export function PipelineMashBar({ scene, filter, onFilter }) {
   const rows = CREW[scene.day] || [];
   const named = rows.filter((c) => !c.mystery);
@@ -295,17 +296,21 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
 
   const reached = (i) => named.filter((c) => stageOf(c, scene.day) >= i).length;
 
-  const cols = [{
-    id: 'casting',
-    cls: casting ? 'pp-ghost' : '',
-    line: '',
-    n: casting,
-    badge: 0,
-    name: 'Casting…',
-    cap: casting ? `${casting} being cast now` : 'none needed right now',
-    sub: casting ? `${casting} of ${total} here · being cast right now` : null,
-    who: [],
-  }];
+  /* P's shape: the casting column only exists while casting is happening */
+  const cols = [];
+  if (casting) {
+    cols.push({
+      id: 'casting',
+      cls: 'pp-ghost',
+      line: '',
+      n: casting,
+      badge: 0,
+      name: 'Casting…',
+      cap: `${casting} being cast now`,
+      sub: `${casting} of ${total} here · being cast right now`,
+      who: [],
+    });
+  }
   STAGES.forEach((s, i) => {
     const n = counts[i];
     const allYou = n > 0 && needs[i] === n;
@@ -338,13 +343,13 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
       </div>
       <div className="pp-flow">
         <div className="pp-track" />
-        <div className="pr-grid">
+        <div className="pp-grid" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
           {cols.map((c) => (
             <div key={c.name} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
               {c.n ? (
                 <button
                   type="button"
-                  className={`pr-stop pr-stop--btn${c.cls ? ` ${c.cls}` : ''}${filter === c.id ? ' pr-stop--active' : ''}`}
+                  className={`pp-stop pp-stop--btn${c.cls ? ` ${c.cls}` : ''}${filter === c.id ? ' pp-stop--active' : ''}`}
                   onClick={() => onFilter(filter === c.id ? null : c.id)}
                 >
                   {c.n}
@@ -357,7 +362,7 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
                   </span>
                 </button>
               ) : (
-                <div className="pr-stop"><i className="pp-node" /></div>
+                <div className="pp-stop"><i className="pp-node" /></div>
               )}
               <div className={`pp-leg-line${c.line ? ` ${c.line}` : ''}`} />
               <div className="pp-leg-name">{c.name}</div>
