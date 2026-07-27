@@ -9,6 +9,8 @@ export const VARIANTS = [
   { key: 'Q', name: 'Filter bar' },
   { key: 'R', name: 'Fixed stages' },
   { key: 'S', name: 'P + filters' },
+  { key: 'T', name: 'Slabs' },
+  { key: 'U', name: 'Green ramp' },
   { key: '0', name: 'Band' },
   { key: '6', name: 'Synthesis' },
   { key: '7', name: 'Faces bar' },

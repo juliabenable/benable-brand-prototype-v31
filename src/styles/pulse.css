@@ -267,6 +267,21 @@
 .pr-grid { position: relative; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 12px; }
 .pr-stop { position: relative; height: 40px; width: min(100%, 132px); margin: 0 auto 10px; border-radius: 12px; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
 
+/* ---- T/U · slab pipeline: full-width blocks, track shows in the gaps ---- */
+.pt-stop { position: relative; height: 40px; width: 100%; border-radius: 10px; display: grid; place-items: center; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.pt-stop--empty { background: #f1f1f3; color: #b9b9bf; }
+/* U · green ramp, light→dark across all stages */
+.pu-s0 { background: #E4F3E9; color: #3d7a5a; }
+.pu-s1 { background: #C4E7D1; color: #2c6b4b; }
+.pu-s2 { background: #96D5AF; color: #1d5c3d; }
+.pu-s3 { background: #5FBD8A; color: #fff; }
+.pu-s4 { background: #2E9E6B; color: #fff; }
+.pu-s5 { background: #1C6B46; color: #fff; }
+.pu-s6 { background: #124A30; color: #fff; }
+.pu-s0, .pu-s1, .pu-s2, .pu-s3, .pu-s4, .pu-s5, .pu-s6 { box-shadow: 0 1px 3px #0000001a; }
+.pu-l0 { background: #C4E7D1; } .pu-l1 { background: #A8DDBC; } .pu-l2 { background: #7BCB9E; }
+.pu-l3 { background: #5FBD8A; } .pu-l4 { background: #2E9E6B; } .pu-l5 { background: #1C6B46; } .pu-l6 { background: #124A30; }
+
 /* ---- S · P's shape, stops become Q-style filter buttons ---- */
 .pp-stop--btn, .pr-stop--btn { display: grid; width: 100%; border: none; padding: 0; font-family: inherit; cursor: pointer; transition: transform 0.15s ease; }
 .pp-stop--btn:hover, .pr-stop--btn:hover { transform: translateY(-2px); }

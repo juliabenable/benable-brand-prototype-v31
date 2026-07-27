@@ -373,3 +373,101 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
     </div>
   );
 }
+
+/* T/U · Slab pipeline — designer mock (Jul 27): every stage is a full-width
+   slab (pale grey "0" slab when empty, no hollow nodes), the track shows
+   only in the gaps as connectors, moved-forward pill back in the header.
+   Keeps S's click-to-filter + hover tooltips. palette 'green' (U) swaps the
+   violet ramp for light→dark greens across all stages. */
+export function PipelineSlabBar({ scene, filter, onFilter, palette = 'violet' }) {
+  const pfx = palette === 'green' ? 'pu' : 'pp';
+  const rows = CREW[scene.day] || [];
+  const named = rows.filter((c) => !c.mystery);
+  const casting = rows.length - named.length;
+  const ready = scene.day === 3;
+  const total = rows.length || 1;
+
+  const counts = STAGES.map(() => 0);
+  const needs = STAGES.map(() => 0);
+  const who = STAGES.map(() => []);
+  named.forEach((c) => {
+    const s = stageOf(c, scene.day);
+    counts[s] += 1;
+    who[s].push(c.handle || c.name);
+    if (c.action) needs[s] += 1;
+  });
+  if (ready) needs[0] = counts[0];
+
+  const reached = (i) => named.filter((c) => stageOf(c, scene.day) >= i).length;
+
+  const cols = [];
+  if (casting) {
+    cols.push({
+      id: 'casting', cls: 'pp-ghost', line: '', n: casting, badge: 0,
+      name: 'Casting…', cap: `${casting} being cast now`,
+      sub: `${casting} of ${total} here · being cast right now`, who: [],
+    });
+  }
+  STAGES.forEach((s, i) => {
+    const n = counts[i];
+    const allYou = n > 0 && needs[i] === n;
+    cols.push({
+      id: i,
+      cls: !n ? '' : allYou ? 'pp-amber' : `${pfx}-s${i}`,
+      line: !n ? '' : allYou ? 'pp-lamber' : `${pfx}-l${i}`,
+      n,
+      badge: allYou ? 0 : needs[i],
+      name: s.label,
+      cap: n ? (allYou ? `${n} ready for your review` : s.on(n)) : s.off,
+      sub: n ? `${n} of ${total} here · ${Math.round((reached(i) / (named.length || 1)) * 100)}% reached this stage or beyond` : null,
+      who: who[i],
+    });
+  });
+  const moved = movedThisWeek(scene.day);
+
+  return (
+    <div className="pp">
+      <div className="pp-head">
+        <div>
+          <h3 className="pp-title">
+            {named.length === 0 ? 'Your crew is taking shape' : `Where your ${rows.length} creators are`}
+          </h3>
+          <p className="pp-sub">Every creator sits at the furthest stage they’ve reached.</p>
+        </div>
+        {moved > 0 && (
+          <span className="pp-moved">↑ {moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
+        )}
+      </div>
+      <div className="pp-flow">
+        <div className="pp-track" />
+        <div className="pp-grid" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
+          {cols.map((c) => (
+            <div key={c.name} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
+              {c.n ? (
+                <button
+                  type="button"
+                  className={`pt-stop pp-stop--btn ${c.cls}${filter === c.id ? ' pp-stop--active' : ''}`}
+                  onClick={() => onFilter(filter === c.id ? null : c.id)}
+                >
+                  {c.n}
+                  {c.badge > 0 && <span className="pp-badge">{c.badge}</span>}
+                  <span className="pq-tip">
+                    <b className="pq-tip-title">{c.name}</b>
+                    <span className="pq-tip-sub">{c.sub}</span>
+                    {c.who.length > 0 && <span className="pq-tip-names">{c.who.join(' · ')}</span>}
+                    <span className="pq-tip-hint">{filter === c.id ? 'Click to show everyone again' : 'Click to filter the list below'}</span>
+                  </span>
+                </button>
+              ) : (
+                <div className="pt-stop pt-stop--empty">0</div>
+              )}
+              <div className={`pp-leg-line${c.line ? ` ${c.line}` : ''}`} />
+              <div className="pp-leg-name">{c.name}</div>
+              <div className="pp-leg-cap">{c.cap}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
