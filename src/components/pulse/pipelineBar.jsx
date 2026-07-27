@@ -378,8 +378,9 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
    slab (pale grey "0" slab when empty, no hollow nodes), the track shows
    only in the gaps as connectors, moved-forward pill back in the header.
    Keeps S's click-to-filter + hover tooltips. palette 'green' (U) swaps the
-   violet ramp for light→dark greens across all stages. */
-export function PipelineSlabBar({ scene, filter, onFilter, palette = 'violet' }) {
+   violet ramp for light→dark greens across all stages; seeall swaps the
+   moved-forward pill for S's "See all creators" filter-clear button. */
+export function PipelineSlabBar({ scene, filter, onFilter, palette = 'violet', seeall = false }) {
   const pfx = palette === 'green' ? 'pu' : 'pp';
   const rows = CREW[scene.day] || [];
   const named = rows.filter((c) => !c.mystery);
@@ -434,8 +435,14 @@ export function PipelineSlabBar({ scene, filter, onFilter, palette = 'violet' })
           </h3>
           <p className="pp-sub">Every creator sits at the furthest stage they’ve reached.</p>
         </div>
-        {moved > 0 && (
-          <span className="pp-moved">↑ {moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
+        {seeall ? (
+          <button type="button" className="pp-seeall" onClick={() => onFilter(null)}>
+            See all creators
+          </button>
+        ) : (
+          moved > 0 && (
+            <span className="pp-moved">↑ {moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
+          )
         )}
       </div>
       <div className="pp-flow">
