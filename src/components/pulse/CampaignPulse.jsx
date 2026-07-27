@@ -55,13 +55,19 @@ export default function CampaignPulse() {
     return () => column.classList.remove('cp-crew-mode');
   }, []);
 
-  // Y · Labs skin paints the whole dashboard column #f9fafb.
+  // Y · Labs skin: grey #f9fafb fills the whole pane below the tabs (the
+  // stage shell, full-bleed to the sidebar); the tabs strip stays white.
   useEffect(() => {
     const wrap = rootRef.current?.parentElement;
     const column = wrap?.classList.contains('cp-host') ? wrap.parentElement : wrap;
+    const pane = column?.parentElement;
     if (!column || variant !== 'Y') return undefined;
     column.classList.add('cp-crew-mode--labs');
-    return () => column.classList.remove('cp-crew-mode--labs');
+    pane?.classList.add('cp-labs-pane');
+    return () => {
+      column.classList.remove('cp-crew-mode--labs');
+      pane?.classList.remove('cp-labs-pane');
+    };
   }, [variant]);
 
   useEffect(() => {
