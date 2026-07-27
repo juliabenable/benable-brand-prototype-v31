@@ -40,12 +40,22 @@ export default function PipelineBar({ scene }) {
   const counts = STAGES.map(() => 0);
   named.forEach((c) => { counts[stageOf(c, scene.day)] += 1; });
 
-  const segs = [];
-  if (casting) segs.push({ cls: 'pp-ghost', n: casting, title: `${casting} being cast` });
-  counts.forEach((n, i) => {
-    if (n) segs.push({ cls: `pp-s${i}`, n, title: `${n} · ${STAGES[i].label}` });
+  /* one column per stage — block, underline and caption stay aligned */
+  const cols = [];
+  if (casting) {
+    cols.push({ key: 'casting', cls: 'pp-ghost', n: casting, name: 'Casting…', cap: `${casting} being cast now` });
+  }
+  STAGES.forEach((s, i) => {
+    const n = counts[i];
+    cols.push({
+      key: s.label,
+      cls: n ? `pp-s${i}` : 'pp-empty',
+      line: n ? `pp-l${i}` : '',
+      n,
+      name: s.label,
+      cap: n ? (ready && i === 0 ? `${n} ready for your review` : s.on(n)) : s.off,
+    });
   });
-  const total = segs.reduce((a, s) => a + s.n, 0) || 1;
   const moved = movedThisWeek(scene.day);
 
   return (
@@ -61,28 +71,15 @@ export default function PipelineBar({ scene }) {
           <span className="pp-moved">{moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
         )}
       </div>
-      <div className="pp-band">
-        {segs.map((s) => (
-          <div key={s.cls} className={`pp-seg ${s.cls}`} style={{ flexGrow: s.n / total }} title={s.title}>
-            {s.n}
+      <div className="pp-grid" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
+        {cols.map((c) => (
+          <div key={c.key} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
+            <div className={`pp-block ${c.cls}`}>{c.n || ''}</div>
+            <div className={`pp-leg-line${c.line ? ` ${c.line}` : ''}`} />
+            <div className="pp-leg-name">{c.name}</div>
+            <div className="pp-leg-cap">{c.cap}</div>
           </div>
         ))}
-        {counts[6] === 0 && <div className="pp-seg pp-stub" style={{ flexGrow: 0.4 / total }} />}
-      </div>
-      <div className="pp-legend">
-        {STAGES.map((s, i) => {
-          const n = counts[i];
-          const cap = n
-            ? (ready && i === 0 ? `${n} ready for your review` : s.on(n))
-            : (ready && i === 0 && casting === 0 ? 'waiting on your picks' : s.off);
-          return (
-            <div key={s.label} className={n ? 'pp-leg' : 'pp-leg pp-leg--off'}>
-              <div className={`pp-leg-line${n ? ` pp-l${i}` : ''}`} />
-              <div className="pp-leg-name">{s.label}</div>
-              <div className="pp-leg-cap">{cap}</div>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
