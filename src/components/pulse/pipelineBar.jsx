@@ -326,7 +326,6 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
       who: who[i],
     });
   });
-  const moved = movedThisWeek(scene.day);
 
   return (
     <div className="pp">
@@ -337,9 +336,9 @@ export function PipelineMashBar({ scene, filter, onFilter }) {
           </h3>
           <p className="pp-sub">Every creator sits at the furthest stage they’ve reached.</p>
         </div>
-        {moved > 0 && (
-          <span className="pp-moved">↑ {moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
-        )}
+        <button type="button" className="pp-seeall" onClick={() => onFilter(null)}>
+          See all creators
+        </button>
       </div>
       <div className="pp-flow">
         <div className="pp-track" />
