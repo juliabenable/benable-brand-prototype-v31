@@ -8,6 +8,7 @@ export const VARIANTS = [
   { key: 'P', name: 'Pipeline' },
   { key: 'Q', name: 'Filter bar' },
   { key: 'R', name: 'Fixed stages' },
+  { key: 'S', name: 'Fixed + filters' },
   { key: '0', name: 'Band' },
   { key: '6', name: 'Synthesis' },
   { key: '7', name: 'Faces bar' },
