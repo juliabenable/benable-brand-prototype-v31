@@ -351,7 +351,7 @@
 .pg-s5 { background: #1E9860; color: #fff; }
 .pg-s6 { background: #147A4F; color: #fff; }
 .pg-s7 { background: #0B5B3A; color: #fff; }
-.pg-stop--zero { opacity: 0.55; }
+.pg-stop--zero { background: #f1f1f3; color: #b9b9bf; } /* 0 = grey, not green */
 .pg-grid .pp-leg-cap { line-height: 1.45; }
 
 /* ---- S · P's shape, stops become Q-style filter buttons ---- */
