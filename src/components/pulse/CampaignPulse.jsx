@@ -8,6 +8,7 @@ import LiveStatus from './LiveStatus.jsx';
 import { Lead, RecapTile, UpNextTile, PaceTile, LiveBarTile } from './tiles.jsx';
 import CrewBar from './crewBar.jsx';
 import PipelineBar, { PipelineFilterBar, PipelineFixedBar, PipelineMashBar, PipelineSlabBar, stageOf } from './pipelineBar.jsx';
+import { LabsCrew, LabsRecap, LabsUpNext, LabsPace } from './labs.jsx';
 
 const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
@@ -22,7 +23,7 @@ const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
 // Survive captured-DOM remounts.
 let persistedIdx = 2; // open on Day 9 — the dead middle is the thesis
-let persistedVariant = 'T';
+let persistedVariant = 'Y';
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -54,6 +55,15 @@ export default function CampaignPulse() {
     return () => column.classList.remove('cp-crew-mode');
   }, []);
 
+  // Y · Labs skin paints the whole dashboard column #f9fafb.
+  useEffect(() => {
+    const wrap = rootRef.current?.parentElement;
+    const column = wrap?.classList.contains('cp-host') ? wrap.parentElement : wrap;
+    if (!column || variant !== 'Y') return undefined;
+    column.classList.add('cp-crew-mode--labs');
+    return () => column.classList.remove('cp-crew-mode--labs');
+  }, [variant]);
+
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.closest?.('input, textarea')) return;
@@ -65,9 +75,9 @@ export default function CampaignPulse() {
   }, []);
 
   const banner = CREW_BANNERS[scene.day];
-  const callMode = ['X', 'P', 'Q', 'R', 'S', 'T', 'U'].includes(variant) || !!BAR[variant];
+  const callMode = ['X', 'P', 'Q', 'R', 'S', 'T', 'U', 'Y'].includes(variant) || !!BAR[variant];
   const crewRows = (CREW[scene.day] || []).filter((c) => {
-    if (!['Q', 'S', 'T', 'U'].includes(variant) || stageFilter == null) return true;
+    if (!['Q', 'S', 'T', 'U', 'Y'].includes(variant) || stageFilter == null) return true;
     if (stageFilter === 'casting') return !!c.mystery;
     return !c.mystery && stageOf(c, scene.day) === stageFilter;
   });
@@ -84,6 +94,7 @@ export default function CampaignPulse() {
       {variant === 'S' && <PipelineMashBar scene={scene} filter={stageFilter} onFilter={setStageFilter} />}
       {variant === 'T' && <PipelineSlabBar scene={scene} filter={stageFilter} onFilter={setStageFilter} />}
       {variant === 'U' && <PipelineSlabBar scene={scene} filter={stageFilter} onFilter={setStageFilter} palette="green" seeall />}
+      {variant === 'Y' && <PipelineSlabBar scene={scene} filter={stageFilter} onFilter={setStageFilter} palette="green" seeall />}
       <div className="cp-crew2" key={`b-${variant}-${scene.day}`}>
         <div className="cp-crew-cols cp-crew-cols--left">
           <div className="cp-crew-left">
@@ -105,6 +116,9 @@ export default function CampaignPulse() {
                 </div>
               </div>
             )}
+            {variant === 'Y' ? (
+              <LabsCrew rows={crewRows} day={scene.day} openCrew={openCrew} toggleCrew={toggleCrew} />
+            ) : (<>
             <div className="cp-crew-card">
               {crewRows.map((c, i) => {
                 const meta = CREW_META[c.name];
@@ -177,13 +191,24 @@ export default function CampaignPulse() {
               )}
             </div>
             <div className="cp-crew-legend">{STAGE_LABELS.join(' · ')}</div>
+            </>)}
           </div>
 
           <aside className="cp-tile-stack cp-tile-stack--gray">
-            {(variant === 'W' || (callMode && variant !== '13')) && <LiveBarTile scene={scene} />}
-            <RecapTile scene={scene} />
-            <UpNextTile scene={scene} />
-            <PaceTile scene={scene} />
+            {variant === 'Y' ? (
+              <>
+                <LabsRecap scene={scene} />
+                <LabsUpNext scene={scene} />
+                <LabsPace scene={scene} />
+              </>
+            ) : (
+              <>
+                {(variant === 'W' || (callMode && variant !== '13')) && <LiveBarTile scene={scene} />}
+                <RecapTile scene={scene} />
+                <UpNextTile scene={scene} />
+                <PaceTile scene={scene} />
+              </>
+            )}
           </aside>
         </div>
       </div>

@@ -282,6 +282,56 @@
 .pu-l0 { background: #C4E7D1; } .pu-l1 { background: #A8DDBC; } .pu-l2 { background: #7BCB9E; }
 .pu-l3 { background: #5FBD8A; } .pu-l4 { background: #2E9E6B; } .pu-l5 { background: #1C6B46; } .pu-l6 { background: #124A30; }
 
+/* ---- Y · Labs skin — Figma Design Labs 11603-48887 ----
+   tokens: bg-body #f9fafb (sampled) · border #e3e3e3 · text #1c1c1c/#717171
+   accent #7a5cfa / light #f5f3fc · verified #0c8ee9 · radius 12 */
+.cp-crew-mode--labs { background: #f9fafb; }
+.lb-card { background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden; animation: cp-in 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+.lb-card + .lb-card { margin-top: 0; }
+.lb-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+.lb-head--div { border-bottom: 1px solid #ececec; }
+.lb-chip { flex: none; width: 38px; height: 38px; border-radius: 10px; background: #f5f3fc; color: #7a5cfa; display: grid; place-items: center; font-size: 16px; font-style: normal; }
+.lb-title { font-size: 15.5px; font-weight: 600; color: #1c1c1c; }
+.lb-sub { font-size: 12.5px; color: #717171; margin-top: 2px; }
+.lb-cols, .lb-row { display: grid; grid-template-columns: minmax(160px, 0.9fr) minmax(0, 1.3fr) 148px 22px; gap: 14px; align-items: center; }
+.lb-cols { padding: 10px 18px; background: #fafafa; border-top: 1px solid #ececec; border-bottom: 1px solid #ececec; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #717171; }
+.lb-item:not(:last-of-type) { border-bottom: 1px solid #f0f0f0; }
+.lb-row { width: 100%; padding: 13px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: inherit; }
+.lb-row:hover { background: #fafafa; }
+.lb-who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.lb-avatar { width: 40px; height: 40px; box-shadow: none; border: none; font-size: 15px; }
+.lb-names { min-width: 0; }
+.lb-name { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #1c1c1c; white-space: nowrap; overflow: hidden; }
+.lb-verified { flex: none; width: 15px; height: 15px; border-radius: 50%; background: #0c8ee9; color: #fff; font-size: 9px; font-weight: 700; display: grid; place-items: center; font-style: normal; }
+.lb-handle { font-size: 12.5px; color: #717171; margin-top: 1px; }
+.lb-update { min-width: 0; font-size: 13.5px; color: #717171; }
+.lb-update .cp-live-fact { color: #717171; font-weight: 400; }
+.lb-bars { display: flex; gap: 5px; }
+.lb-bar { width: 19px; height: 5px; border-radius: 999px; background: #e3e3e3; }
+.lb-bar--done { background: #7a5cfa; }
+.lb-bar--now { background: #c9b8ff; }
+.lb-chev { justify-self: end; color: #717171; font-size: 15px; line-height: 1; transition: transform 0.2s ease; }
+.lb-chev--open { transform: rotate(180deg); }
+.lb-history { padding: 2px 18px 16px 70px; }
+.lb-more { display: flex; align-items: center; gap: 8px; width: 100%; padding: 15px 18px; background: none; border: none; border-top: 1px solid #ececec; color: #7a5cfa; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; text-align: left; transition: background 0.15s ease; }
+.lb-more:hover { background: #f8f6ff; }
+.lb-list { padding: 4px 18px; }
+.lb-li { display: flex; gap: 10px; padding: 12px 0; font-size: 13.5px; line-height: 1.5; color: #717171; }
+.lb-li:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
+.lb-li-emoji { flex: none; font-size: 14px; margin-top: 1px; }
+.lb-li p { margin: 0; }
+.lb-li strong { color: #1c1c1c; font-weight: 600; }
+.lb-eta { color: #717171; }
+.lb-race { padding: 6px 18px 16px; }
+.lb-race-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 600; color: #1c1c1c; margin: 10px 0 6px; }
+.lb-race-day { color: #717171; font-weight: 500; font-size: 12.5px; }
+.lb-track { height: 8px; border-radius: 999px; background: #ececec; overflow: hidden; }
+.lb-fill { display: block; height: 100%; border-radius: 999px; transform-origin: left center; animation: bp-grow 1s cubic-bezier(0.22,1,0.36,1) both; }
+.lb-fill--you { background: #7a5cfa; }
+.lb-fill--them { background: #d4d4d4; }
+.lb-pill { margin-top: 14px; background: #f5f3fc; border-radius: 10px; padding: 10px 14px; font-size: 12.5px; line-height: 1.5; color: #444; }
+.lb-pill strong { color: #1c1c1c; }
+
 /* ---- S · P's shape, stops become Q-style filter buttons ---- */
 .pp-stop--btn, .pr-stop--btn { display: grid; width: 100%; border: none; padding: 0; font-family: inherit; cursor: pointer; transition: transform 0.15s ease; }
 .pp-stop--btn:hover, .pr-stop--btn:hover { transform: translateY(-2px); }

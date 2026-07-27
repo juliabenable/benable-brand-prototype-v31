@@ -11,6 +11,7 @@ export const VARIANTS = [
   { key: 'S', name: 'P + filters' },
   { key: 'T', name: 'Slabs' },
   { key: 'U', name: 'Green ramp' },
+  { key: 'Y', name: 'Labs skin' },
   { key: '0', name: 'Band' },
   { key: '6', name: 'Synthesis' },
   { key: '7', name: 'Faces bar' },
