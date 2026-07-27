@@ -38,22 +38,33 @@ export default function PipelineBar({ scene }) {
   const ready = scene.day === 3;
 
   const counts = STAGES.map(() => 0);
-  named.forEach((c) => { counts[stageOf(c, scene.day)] += 1; });
+  const needs = STAGES.map(() => 0);
+  named.forEach((c) => {
+    const s = stageOf(c, scene.day);
+    counts[s] += 1;
+    if (c.action) needs[s] += 1;
+  });
+  if (ready) needs[0] = counts[0]; // the whole shortlist waits on the brand
 
-  /* one column per stage — block, underline and caption stay aligned */
+  /* one column per stage — stop, underline and caption stay aligned.
+     Color = who has the ball: purple in motion with us, amber waiting on
+     you (whole stage, or a badge when it's just some), green = posts are
+     real, hollow node = not reached yet. */
   const cols = [];
   if (casting) {
-    cols.push({ key: 'casting', cls: 'pp-ghost', n: casting, name: 'Casting…', cap: `${casting} being cast now` });
+    cols.push({ key: 'casting', cls: 'pp-ghost', n: casting, name: 'Casting…', cap: `${casting} being cast now`, badge: 0 });
   }
   STAGES.forEach((s, i) => {
     const n = counts[i];
+    const allYou = n > 0 && needs[i] === n;
     cols.push({
       key: s.label,
-      cls: n ? `pp-s${i}` : 'pp-empty',
-      line: n ? `pp-l${i}` : '',
+      cls: !n ? '' : allYou ? 'pp-amber' : `pp-s${i}`,
+      line: !n ? '' : allYou ? 'pp-lamber' : `pp-l${i}`,
       n,
+      badge: allYou ? 0 : needs[i],
       name: s.label,
-      cap: n ? (ready && i === 0 ? `${n} ready for your review` : s.on(n)) : s.off,
+      cap: n ? (allYou ? `${n} ready for your review` : s.on(n)) : s.off,
     });
   });
   const moved = movedThisWeek(scene.day);
@@ -68,18 +79,24 @@ export default function PipelineBar({ scene }) {
           <p className="pp-sub">Every creator sits at the furthest stage they’ve reached.</p>
         </div>
         {moved > 0 && (
-          <span className="pp-moved">{moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
+          <span className="pp-moved">↑ {moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
         )}
       </div>
-      <div className="pp-grid" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
-        {cols.map((c) => (
-          <div key={c.key} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
-            <div className={`pp-block ${c.cls}`}>{c.n || ''}</div>
-            <div className={`pp-leg-line${c.line ? ` ${c.line}` : ''}`} />
-            <div className="pp-leg-name">{c.name}</div>
-            <div className="pp-leg-cap">{c.cap}</div>
-          </div>
-        ))}
+      <div className="pp-flow">
+        <div className="pp-track" />
+        <div className="pp-grid" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
+          {cols.map((c) => (
+            <div key={c.key} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
+              <div className={`pp-stop${c.cls ? ` ${c.cls}` : ''}`}>
+                {c.n ? c.n : <i className="pp-node" />}
+                {c.badge > 0 && <span className="pp-badge">{c.badge}</span>}
+              </div>
+              <div className={`pp-leg-line${c.line ? ` ${c.line}` : ''}`} />
+              <div className="pp-leg-name">{c.name}</div>
+              <div className="pp-leg-cap">{c.cap}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

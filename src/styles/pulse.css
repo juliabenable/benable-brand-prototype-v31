@@ -236,22 +236,28 @@
 .pp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .pp-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin: 0 0 3px; }
 .pp-sub { font-size: 12.5px; color: #9a9a9a; margin: 0; }
-.pp-moved { font-size: 13px; font-weight: 600; color: #1c8a5c; white-space: nowrap; padding-top: 3px; }
-.pp-grid { display: grid; gap: 12px; }
+.pp-moved { background: #ecf8f1; border: 1px solid #d8eee0; color: #1c6b46; border-radius: 999px; padding: 6px 13px; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.pp-flow { position: relative; }
+.pp-track { position: absolute; left: 4px; right: 4px; top: 18px; height: 4px; border-radius: 999px; background: #ececec; }
+.pp-grid { position: relative; display: grid; gap: 12px; }
 .pp-col { min-width: 0; }
-.pp-block { height: 40px; border-radius: 8px; display: grid; place-items: center; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
-.pp-s0 { background: #EDE6FC; color: #4b3a86; }
-.pp-s1 { background: #D8C4F9; color: #47269e; }
-.pp-s2 { background: #B394F2; color: #2f1670; }
-.pp-s3 { background: #6D45F0; color: #fff; }
-.pp-s4 { background: #57BE8C; color: #fff; }
-.pp-s5 { background: #1EA36B; color: #fff; }
-.pp-s6 { background: #147A4F; color: #fff; }
-.pp-empty { background: #f2f2f4; }
+.pp-stop { position: relative; height: 40px; border-radius: 10px; display: grid; place-items: center; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.pp-node { width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid #d9d9d9; }
+.pp-s0 { background: #EFE9FE; color: #5e41d6; }
+.pp-s1 { background: #DCCEFB; color: #4b2fa0; }
+.pp-s2 { background: #B79FF7; color: #2f1670; }
+.pp-s3 { background: #7A5CFA; color: #fff; }
+.pp-s4 { background: #5FBD8A; color: #fff; }
+.pp-s5 { background: #2E9E6B; color: #fff; }
+.pp-s6 { background: #1C6B46; color: #fff; }
+.pp-s0, .pp-s1, .pp-s2, .pp-s3, .pp-s4, .pp-s5, .pp-s6, .pp-amber { box-shadow: 0 1px 3px #0000001a; }
+.pp-amber { background: #F5A041; color: #fff; }
 .pp-ghost { background: repeating-linear-gradient(45deg, #eee 0 6px, #f6f6f6 6px 12px); color: #9a9a9a; }
+.pp-badge { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 999px; background: #F5A041; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; padding: 0 4px; border: 2px solid #fff; }
 .pp-leg-line { height: 3px; border-radius: 999px; background: #e9e9e9; margin-bottom: 9px; }
-.pp-l0 { background: #D8C4F9; } .pp-l1 { background: #C4A9F6; } .pp-l2 { background: #A47FEF; }
-.pp-l3 { background: #6D45F0; } .pp-l4 { background: #57BE8C; } .pp-l5 { background: #1EA36B; } .pp-l6 { background: #147A4F; }
+.pp-l0 { background: #DCCEFB; } .pp-l1 { background: #C9B2F9; } .pp-l2 { background: #A98BF5; }
+.pp-l3 { background: #7A5CFA; } .pp-l4 { background: #5FBD8A; } .pp-l5 { background: #2E9E6B; } .pp-l6 { background: #1C6B46; }
+.pp-lamber { background: #F5A041; }
 .pp-leg-name { font-size: 12.5px; font-weight: 600; color: #1a1a1a; line-height: 1.3; }
 .pp-col--off .pp-leg-name { color: #9a9a9a; }
 .pp-leg-cap { font-size: 11.5px; color: #9a9a9a; margin-top: 2px; line-height: 1.4; }
