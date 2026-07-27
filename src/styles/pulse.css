@@ -285,9 +285,10 @@
 /* ---- Y · Labs skin — Figma Design Labs 11603-48887 ----
    tokens: bg-body #f9fafb (sampled) · border #e3e3e3 · text #1c1c1c/#717171
    accent #7a5cfa / light #f5f3fc · verified #0c8ee9 · radius 12 */
-.cp-labs-pane { background: #f9fafb; } /* full pane, sidebar edge to viewport */
+/* !important: captured-page styles win the cascade otherwise */
+.cp-labs-pane { background: #f9fafb !important; } /* full pane, sidebar edge to viewport */
 /* tabs strip stays white, full-bleed across the pane's 20px gutters */
-.cp-crew-mode--labs > .workflow-dashboard-controls { background: #fff; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
+.cp-crew-mode--labs > .workflow-dashboard-controls { background: #fff !important; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
 /* Figma layout: creators table LEFT (wide), rail cards RIGHT (344px) */
 .cp-root--y .cp-crew-cols--left { grid-template-columns: minmax(0, 1fr) 344px; }
 .cp-root--y .cp-crew-cols--left > .cp-tile-stack { order: 1; }
