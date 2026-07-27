@@ -5,6 +5,7 @@ export const VARIANTS = [
   { key: 'V', name: 'Gray + crew' },
   { key: 'W', name: 'Live bar' },
   { key: 'X', name: 'Call fixes' },
+  { key: 'P', name: 'Pipeline' },
   { key: '0', name: 'Band' },
   { key: '6', name: 'Synthesis' },
   { key: '7', name: 'Faces bar' },

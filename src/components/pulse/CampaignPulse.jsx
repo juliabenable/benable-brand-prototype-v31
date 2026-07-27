@@ -7,6 +7,7 @@ import {
 import LiveStatus from './LiveStatus.jsx';
 import { Lead, RecapTile, UpNextTile, PaceTile, LiveBarTile } from './tiles.jsx';
 import CrewBar from './crewBar.jsx';
+import PipelineBar from './pipelineBar.jsx';
 
 const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
@@ -21,7 +22,7 @@ const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
 // Survive captured-DOM remounts.
 let persistedIdx = 2; // open on Day 9 — the dead middle is the thesis
-let persistedVariant = 'V';
+let persistedVariant = 'P';
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -62,7 +63,7 @@ export default function CampaignPulse() {
   }, []);
 
   const banner = CREW_BANNERS[scene.day];
-  const callMode = variant === 'X' || !!BAR[variant];
+  const callMode = variant === 'X' || variant === 'P' || !!BAR[variant];
 
   return (
     <div className={`cp-root cp-root--${variant.toLowerCase()}`} ref={rootRef}>
@@ -70,6 +71,7 @@ export default function CampaignPulse() {
         <Lead scene={scene} />
       </div>
       {BAR[variant] && <CrewBar mode={BAR[variant]} scene={scene} ready={scene.day === 3} />}
+      {variant === 'P' && <PipelineBar scene={scene} />}
       <div className="cp-crew2" key={`b-${variant}-${scene.day}`}>
         <div className="cp-crew-cols cp-crew-cols--left">
           <div className="cp-crew-left">
