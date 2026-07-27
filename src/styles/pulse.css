@@ -352,6 +352,9 @@
 .pg-s6 { background: #147A4F; color: #fff; }
 .pg-s7 { background: #0B5B3A; color: #fff; }
 .pg-stop--zero { background: #f1f1f3; color: #b9b9bf; } /* 0 = grey, not green */
+.pg-stop .pp-badge { min-width: 22px; height: 22px; font-size: 12px; top: -9px; right: -7px; }
+/* Labs variants: the tracking bar sits directly on the grey pane, no card */
+.cp-root--y .pp, .cp-root--z .pp { background: transparent; border: none; border-radius: 0; padding: 6px 0 0; box-shadow: none; }
 .pg-grid .pp-leg-cap { line-height: 1.45; }
 
 /* ---- S · P's shape, stops become Q-style filter buttons ---- */
