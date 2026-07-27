@@ -260,6 +260,10 @@
 .pp-lamber { background: #F5A041; }
 .pp-leg-name { font-size: 12.5px; font-weight: 600; color: #1a1a1a; line-height: 1.3; }
 
+/* ---- R · fixed stages: P's subway, constant 8-slot geometry ---- */
+.pr-grid { position: relative; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 12px; }
+.pr-stop { position: relative; height: 40px; width: min(100%, 132px); margin: 0 auto 10px; border-radius: 12px; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+
 /* ---- Q · filter bar: % progress band + filtering chips + hover tips ---- */
 .pq { margin: 0 0 20px; animation: cp-in 0.45s cubic-bezier(0.22,1,0.36,1) both; }
 .pq-top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }

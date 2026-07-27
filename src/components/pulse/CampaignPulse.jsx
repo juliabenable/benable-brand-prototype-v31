@@ -7,7 +7,7 @@ import {
 import LiveStatus from './LiveStatus.jsx';
 import { Lead, RecapTile, UpNextTile, PaceTile, LiveBarTile } from './tiles.jsx';
 import CrewBar from './crewBar.jsx';
-import PipelineBar, { PipelineFilterBar, stageOf } from './pipelineBar.jsx';
+import PipelineBar, { PipelineFilterBar, PipelineFixedBar, stageOf } from './pipelineBar.jsx';
 
 const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
@@ -22,7 +22,7 @@ const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
 // Survive captured-DOM remounts.
 let persistedIdx = 2; // open on Day 9 — the dead middle is the thesis
-let persistedVariant = 'Q';
+let persistedVariant = 'R';
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -65,7 +65,7 @@ export default function CampaignPulse() {
   }, []);
 
   const banner = CREW_BANNERS[scene.day];
-  const callMode = variant === 'X' || variant === 'P' || variant === 'Q' || !!BAR[variant];
+  const callMode = ['X', 'P', 'Q', 'R'].includes(variant) || !!BAR[variant];
   const crewRows = (CREW[scene.day] || []).filter((c) => {
     if (variant !== 'Q' || stageFilter == null) return true;
     if (stageFilter === 'casting') return !!c.mystery;
@@ -80,6 +80,7 @@ export default function CampaignPulse() {
       {BAR[variant] && <CrewBar mode={BAR[variant]} scene={scene} ready={scene.day === 3} />}
       {variant === 'P' && <PipelineBar scene={scene} />}
       {variant === 'Q' && <PipelineFilterBar scene={scene} filter={stageFilter} onFilter={setStageFilter} />}
+      {variant === 'R' && <PipelineFixedBar scene={scene} />}
       <div className="cp-crew2" key={`b-${variant}-${scene.day}`}>
         <div className="cp-crew-cols cp-crew-cols--left">
           <div className="cp-crew-left">

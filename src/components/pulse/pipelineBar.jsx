@@ -195,3 +195,78 @@ export function PipelineFilterBar({ scene, filter, onFilter }) {
     </div>
   );
 }
+
+/* R · Fixed stages — P's subway with constant geometry: always 8 slots
+   (Casting… slot never disappears) and every stop the same fixed-size pill,
+   so scrubbing days never reflows the layout. */
+export function PipelineFixedBar({ scene }) {
+  const rows = CREW[scene.day] || [];
+  const named = rows.filter((c) => !c.mystery);
+  const casting = rows.length - named.length;
+  const ready = scene.day === 3;
+
+  const counts = STAGES.map(() => 0);
+  const needs = STAGES.map(() => 0);
+  named.forEach((c) => {
+    const s = stageOf(c, scene.day);
+    counts[s] += 1;
+    if (c.action) needs[s] += 1;
+  });
+  if (ready) needs[0] = counts[0];
+
+  const cols = [{
+    key: 'casting',
+    cls: casting ? 'pp-ghost' : '',
+    line: '',
+    n: casting,
+    badge: 0,
+    name: 'Casting…',
+    cap: casting ? `${casting} being cast now` : 'none needed right now',
+  }];
+  STAGES.forEach((s, i) => {
+    const n = counts[i];
+    const allYou = n > 0 && needs[i] === n;
+    cols.push({
+      key: s.label,
+      cls: !n ? '' : allYou ? 'pp-amber' : `pp-s${i}`,
+      line: !n ? '' : allYou ? 'pp-lamber' : `pp-l${i}`,
+      n,
+      badge: allYou ? 0 : needs[i],
+      name: s.label,
+      cap: n ? (allYou ? `${n} ready for your review` : s.on(n)) : s.off,
+    });
+  });
+  const moved = movedThisWeek(scene.day);
+
+  return (
+    <div className="pp">
+      <div className="pp-head">
+        <div>
+          <h3 className="pp-title">
+            {named.length === 0 ? 'Your crew is taking shape' : `Where your ${rows.length} creators are`}
+          </h3>
+          <p className="pp-sub">Every creator sits at the furthest stage they’ve reached.</p>
+        </div>
+        {moved > 0 && (
+          <span className="pp-moved">↑ {moved} creator{moved > 1 ? 's' : ''} moved forward this week</span>
+        )}
+      </div>
+      <div className="pp-flow">
+        <div className="pp-track" />
+        <div className="pr-grid">
+          {cols.map((c) => (
+            <div key={c.key} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
+              <div className={`pr-stop${c.cls ? ` ${c.cls}` : ''}`}>
+                {c.n ? c.n : <i className="pp-node" />}
+                {c.badge > 0 && <span className="pp-badge">{c.badge}</span>}
+              </div>
+              <div className={`pp-leg-line${c.line ? ` ${c.line}` : ''}`} />
+              <div className="pp-leg-name">{c.name}</div>
+              <div className="pp-leg-cap">{c.cap}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
