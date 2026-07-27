@@ -1,14 +1,4 @@
-import { CREW, PHOTOS, STAGE_LABELS } from './pulseData.js';
-
-const PCT = { 1: '4%', 3: '12%', 9: '34%', 16: '58%', 22: '80%', 30: '100%' };
-const FCAST = {
-  1: '↗ Casting under way — shortlist expected ~2 days ahead of average',
-  3: '↗ Shortlist ready 9 days ahead of a typical gifted campaign',
-  9: '↗ On track to wrap Aug 14 — ~9 days ahead of a typical gifted campaign',
-  16: '↗ First content 25 days ahead of average',
-  22: '↗ Wrapping ~Aug 14 — 3 posts already live',
-  30: '🎉 Wrapped 37 days ahead of average',
-};
+import { CREW, PHOTOS, STAGE_LABELS, PCT, FCAST } from './pulseData.js';
 
 /* buckets: rows needing the brand pull out into an amber "Awaiting you"
    bucket; casting slots render as a dashed ghost; the rest sit in their

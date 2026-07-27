@@ -6,6 +6,7 @@ export const VARIANTS = [
   { key: 'W', name: 'Live bar' },
   { key: 'X', name: 'Call fixes' },
   { key: 'P', name: 'Pipeline' },
+  { key: 'Q', name: 'Filter bar' },
   { key: '0', name: 'Band' },
   { key: '6', name: 'Synthesis' },
   { key: '7', name: 'Faces bar' },
@@ -13,6 +14,17 @@ export const VARIANTS = [
 ];
 
 export const STAGE_LABELS = ['Invited', 'Confirmed', 'Product', 'Filming', 'Submitted', 'Live'];
+
+/* campaign completion + forecast per demo day (shared by bar variants) */
+export const PCT = { 1: '4%', 3: '12%', 9: '34%', 16: '58%', 22: '80%', 30: '100%' };
+export const FCAST = {
+  1: '↗ Casting under way — shortlist expected ~2 days ahead of average',
+  3: '↗ Shortlist ready 9 days ahead of a typical gifted campaign',
+  9: '↗ On track to wrap Aug 14 — ~9 days ahead of a typical gifted campaign',
+  16: '↗ First content 25 days ahead of average',
+  22: '↗ Wrapping ~Aug 14 — 3 posts already live',
+  30: '🎉 Wrapped 37 days ahead of average',
+};
 
 export const HUES = {
   Maya: 'linear-gradient(135deg,#ff9d6c,#f5658c)',

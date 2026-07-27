@@ -7,7 +7,7 @@ import {
 import LiveStatus from './LiveStatus.jsx';
 import { Lead, RecapTile, UpNextTile, PaceTile, LiveBarTile } from './tiles.jsx';
 import CrewBar from './crewBar.jsx';
-import PipelineBar from './pipelineBar.jsx';
+import PipelineBar, { PipelineFilterBar, stageOf } from './pipelineBar.jsx';
 
 const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
@@ -22,7 +22,7 @@ const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
 // Survive captured-DOM remounts.
 let persistedIdx = 2; // open on Day 9 — the dead middle is the thesis
-let persistedVariant = 'P';
+let persistedVariant = 'Q';
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -30,11 +30,13 @@ export default function CampaignPulse() {
     VARIANTS.some((v) => v.key === persistedVariant) ? persistedVariant : 'V',
   );
   const [openCrew, setOpenCrew] = useState(() => new Set());
+  const [stageFilter, setStageFilter] = useState(null);
   const rootRef = useRef(null);
   const scene = DAYS[idx];
 
   useEffect(() => { persistedIdx = idx; }, [idx]);
   useEffect(() => { persistedVariant = variant; }, [variant]);
+  useEffect(() => { setStageFilter(null); }, [idx, variant]);
 
   const toggleCrew = (k) =>
     setOpenCrew((prev) => {
@@ -63,7 +65,12 @@ export default function CampaignPulse() {
   }, []);
 
   const banner = CREW_BANNERS[scene.day];
-  const callMode = variant === 'X' || variant === 'P' || !!BAR[variant];
+  const callMode = variant === 'X' || variant === 'P' || variant === 'Q' || !!BAR[variant];
+  const crewRows = (CREW[scene.day] || []).filter((c) => {
+    if (variant !== 'Q' || stageFilter == null) return true;
+    if (stageFilter === 'casting') return !!c.mystery;
+    return !c.mystery && stageOf(c, scene.day) === stageFilter;
+  });
 
   return (
     <div className={`cp-root cp-root--${variant.toLowerCase()}`} ref={rootRef}>
@@ -72,6 +79,7 @@ export default function CampaignPulse() {
       </div>
       {BAR[variant] && <CrewBar mode={BAR[variant]} scene={scene} ready={scene.day === 3} />}
       {variant === 'P' && <PipelineBar scene={scene} />}
+      {variant === 'Q' && <PipelineFilterBar scene={scene} filter={stageFilter} onFilter={setStageFilter} />}
       <div className="cp-crew2" key={`b-${variant}-${scene.day}`}>
         <div className="cp-crew-cols cp-crew-cols--left">
           <div className="cp-crew-left">
@@ -94,7 +102,7 @@ export default function CampaignPulse() {
               </div>
             )}
             <div className="cp-crew-card">
-              {(CREW[scene.day] || []).map((c, i) => {
+              {crewRows.map((c, i) => {
                 const meta = CREW_META[c.name];
                 const rowKey = `${scene.day}-${c.name}-${i}`;
                 const open = openCrew.has(rowKey);
