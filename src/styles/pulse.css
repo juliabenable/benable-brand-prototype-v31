@@ -252,7 +252,7 @@
 .pp-leg-line { height: 3px; border-radius: 999px; background: #e9e9e9; margin-bottom: 9px; }
 .pp-l0 { background: #D8C4F9; } .pp-l1 { background: #C4A9F6; } .pp-l2 { background: #A47FEF; }
 .pp-l3 { background: #6D45F0; } .pp-l4 { background: #57BE8C; } .pp-l5 { background: #1EA36B; } .pp-l6 { background: #147A4F; }
-.pp-leg-name { font-size: 12.5px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-leg-name { font-size: 12.5px; font-weight: 600; color: #1a1a1a; line-height: 1.3; }
 .pp-col--off .pp-leg-name { color: #9a9a9a; }
 .pp-leg-cap { font-size: 11.5px; color: #9a9a9a; margin-top: 2px; line-height: 1.4; }
 
