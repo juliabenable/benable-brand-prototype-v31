@@ -286,6 +286,10 @@
    tokens: bg-body #f9fafb (sampled) · border #e3e3e3 · text #1c1c1c/#717171
    accent #7a5cfa / light #f5f3fc · verified #0c8ee9 · radius 12 */
 .cp-crew-mode--labs { background: #f9fafb; }
+/* Figma layout: creators table LEFT (wide), rail cards RIGHT (344px) */
+.cp-root--y .cp-crew-cols--left { grid-template-columns: minmax(0, 1fr) 344px; }
+.cp-root--y .cp-crew-cols--left > .cp-tile-stack { order: 1; }
+@media (max-width: 1100px) { .cp-root--y .cp-crew-cols--left { grid-template-columns: 1fr; } .cp-root--y .cp-crew-cols--left > .cp-tile-stack { order: 0; } }
 .lb-card { background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden; animation: cp-in 0.45s cubic-bezier(0.22,1,0.36,1) both; }
 .lb-card + .lb-card { margin-top: 0; }
 .lb-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
@@ -319,7 +323,7 @@
 .lb-li { display: flex; gap: 10px; padding: 12px 0; font-size: 13.5px; line-height: 1.5; color: #717171; }
 .lb-li:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
 .lb-li-emoji { flex: none; font-size: 14px; margin-top: 1px; }
-.lb-li p { margin: 0; }
+.lb-li p { margin: 0; color: #717171; } /* captured-page CSS colors bare <p>; pin it */
 .lb-li strong { color: #1c1c1c; font-weight: 600; }
 .lb-eta { color: #717171; }
 .lb-race { padding: 6px 18px 16px; }
