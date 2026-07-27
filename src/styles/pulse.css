@@ -290,9 +290,9 @@
 /* tabs strip stays white, full-bleed across the pane's 20px gutters */
 .cp-crew-mode--labs > .workflow-dashboard-controls { background: #fff !important; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
 /* Figma layout: creators table LEFT (wide), rail cards RIGHT (344px) */
-.cp-root--y .cp-crew-cols--left { grid-template-columns: minmax(0, 1fr) 344px; }
-.cp-root--y .cp-crew-cols--left > .cp-tile-stack { order: 1; }
-@media (max-width: 1100px) { .cp-root--y .cp-crew-cols--left { grid-template-columns: 1fr; } .cp-root--y .cp-crew-cols--left > .cp-tile-stack { order: 0; } }
+.cp-root--y .cp-crew-cols--left, .cp-root--z .cp-crew-cols--left { grid-template-columns: minmax(0, 1fr) 344px; }
+.cp-root--y .cp-crew-cols--left > .cp-tile-stack, .cp-root--z .cp-crew-cols--left > .cp-tile-stack { order: 1; }
+@media (max-width: 1100px) { .cp-root--y .cp-crew-cols--left, .cp-root--z .cp-crew-cols--left { grid-template-columns: 1fr; } .cp-root--y .cp-crew-cols--left > .cp-tile-stack, .cp-root--z .cp-crew-cols--left > .cp-tile-stack { order: 0; } }
 .lb-card { background: #fff; border: 1px solid #e3e3e3; border-radius: 12px; overflow: hidden; animation: cp-in 0.45s cubic-bezier(0.22,1,0.36,1) both; }
 .lb-card + .lb-card { margin-top: 0; }
 .lb-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
@@ -338,6 +338,21 @@
 .lb-fill--them { background: #d4d4d4; }
 .lb-pill { margin-top: 14px; background: #f5f3fc; border-radius: 10px; padding: 10px 14px; font-size: 12.5px; line-height: 1.5; color: #444; }
 .lb-pill strong { color: #1c1c1c; }
+
+/* ---- Z · gradient bar: continuous light→dark ramp, all stages always ---- */
+.pg-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+.pg-stop { position: relative; height: 44px; width: 100%; border-radius: 12px; display: grid; place-items: center; font-size: 13.5px; font-weight: 700; margin-bottom: 12px; }
+.pg-grid > .pp-col:first-child .pg-stop { border-top-left-radius: 999px; border-bottom-left-radius: 999px; }
+.pg-s0 { background: #E9F5EE; color: #2c6b4b; }
+.pg-s1 { background: #CFEBDA; color: #2c6b4b; }
+.pg-s2 { background: #A8DDBC; color: #1d5c3d; }
+.pg-s3 { background: #77C596; color: #fff; }
+.pg-s4 { background: #3FAE73; color: #fff; }
+.pg-s5 { background: #1E9860; color: #fff; }
+.pg-s6 { background: #147A4F; color: #fff; }
+.pg-s7 { background: #0B5B3A; color: #fff; }
+.pg-stop--zero { opacity: 0.55; }
+.pg-grid .pp-leg-cap { line-height: 1.45; }
 
 /* ---- S · P's shape, stops become Q-style filter buttons ---- */
 .pp-stop--btn, .pr-stop--btn { display: grid; width: 100%; border: none; padding: 0; font-family: inherit; cursor: pointer; transition: transform 0.15s ease; }

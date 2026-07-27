@@ -7,7 +7,7 @@ import {
 import LiveStatus from './LiveStatus.jsx';
 import { Lead, RecapTile, UpNextTile, PaceTile, LiveBarTile } from './tiles.jsx';
 import CrewBar from './crewBar.jsx';
-import PipelineBar, { PipelineFilterBar, PipelineFixedBar, PipelineMashBar, PipelineSlabBar, stageOf } from './pipelineBar.jsx';
+import PipelineBar, { PipelineFilterBar, PipelineFixedBar, PipelineMashBar, PipelineSlabBar, PipelineGradientBar, stageOf } from './pipelineBar.jsx';
 import { LabsCrew, LabsRecap, LabsUpNext, LabsPace } from './labs.jsx';
 
 const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
@@ -23,7 +23,7 @@ const BAR = { 0: 'band', 6: 'synth', 7: 'faces', 13: 'vitals' };
 
 // Survive captured-DOM remounts.
 let persistedIdx = 2; // open on Day 9 — the dead middle is the thesis
-let persistedVariant = 'Y';
+let persistedVariant = 'Z';
 
 export default function CampaignPulse() {
   const [idx, setIdx] = useState(persistedIdx);
@@ -61,7 +61,7 @@ export default function CampaignPulse() {
     const wrap = rootRef.current?.parentElement;
     const column = wrap?.classList.contains('cp-host') ? wrap.parentElement : wrap;
     const pane = column?.parentElement;
-    if (!column || variant !== 'Y') return undefined;
+    if (!column || !['Y', 'Z'].includes(variant)) return undefined;
     column.classList.add('cp-crew-mode--labs');
     pane?.classList.add('cp-labs-pane');
     return () => {
@@ -81,9 +81,9 @@ export default function CampaignPulse() {
   }, []);
 
   const banner = CREW_BANNERS[scene.day];
-  const callMode = ['X', 'P', 'Q', 'R', 'S', 'T', 'U', 'Y'].includes(variant) || !!BAR[variant];
+  const callMode = ['X', 'P', 'Q', 'R', 'S', 'T', 'U', 'Y', 'Z'].includes(variant) || !!BAR[variant];
   const crewRows = (CREW[scene.day] || []).filter((c) => {
-    if (!['Q', 'S', 'T', 'U', 'Y'].includes(variant) || stageFilter == null) return true;
+    if (!['Q', 'S', 'T', 'U', 'Y', 'Z'].includes(variant) || stageFilter == null) return true;
     if (stageFilter === 'casting') return !!c.mystery;
     return !c.mystery && stageOf(c, scene.day) === stageFilter;
   });
@@ -101,6 +101,7 @@ export default function CampaignPulse() {
       {variant === 'T' && <PipelineSlabBar scene={scene} filter={stageFilter} onFilter={setStageFilter} />}
       {variant === 'U' && <PipelineSlabBar scene={scene} filter={stageFilter} onFilter={setStageFilter} palette="green" seeall />}
       {variant === 'Y' && <PipelineSlabBar scene={scene} filter={stageFilter} onFilter={setStageFilter} palette="green" seeall />}
+      {variant === 'Z' && <PipelineGradientBar scene={scene} filter={stageFilter} onFilter={setStageFilter} />}
       <div className="cp-crew2" key={`b-${variant}-${scene.day}`}>
         <div className="cp-crew-cols cp-crew-cols--left">
           <div className="cp-crew-left">
@@ -122,7 +123,7 @@ export default function CampaignPulse() {
                 </div>
               </div>
             )}
-            {variant === 'Y' ? (
+            {['Y', 'Z'].includes(variant) ? (
               <LabsCrew rows={crewRows} day={scene.day} openCrew={openCrew} toggleCrew={toggleCrew} />
             ) : (<>
             <div className="cp-crew-card">
@@ -201,7 +202,7 @@ export default function CampaignPulse() {
           </div>
 
           <aside className="cp-tile-stack cp-tile-stack--gray">
-            {variant === 'Y' ? (
+            {['Y', 'Z'].includes(variant) ? (
               <>
                 <LabsRecap scene={scene} />
                 <LabsUpNext scene={scene} />

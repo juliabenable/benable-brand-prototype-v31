@@ -478,3 +478,91 @@ export function PipelineSlabBar({ scene, filter, onFilter, palette = 'violet', s
     </div>
   );
 }
+
+/* Z · Gradient bar — mock (Jul 27): one continuous light→dark green strip,
+   every stage always visible as a touching slab (casting slot included,
+   pill-rounded left end), count inside, plain label + caption below — no
+   track, no empties, no underlines. Keeps click-to-filter + tooltips. */
+export function PipelineGradientBar({ scene, filter, onFilter }) {
+  const rows = CREW[scene.day] || [];
+  const named = rows.filter((c) => !c.mystery);
+  const casting = rows.length - named.length;
+  const ready = scene.day === 3;
+  const total = rows.length || 1;
+
+  const counts = STAGES.map(() => 0);
+  const needs = STAGES.map(() => 0);
+  const who = STAGES.map(() => []);
+  named.forEach((c) => {
+    const s = stageOf(c, scene.day);
+    counts[s] += 1;
+    who[s].push(c.handle || c.name);
+    if (c.action) needs[s] += 1;
+  });
+  if (ready) needs[0] = counts[0];
+
+  const reached = (i) => named.filter((c) => stageOf(c, scene.day) >= i).length;
+
+  const cols = [{
+    id: 'casting', ramp: 'pg-s0', n: casting, badge: 0,
+    name: 'Casting…',
+    cap: casting ? `${casting} being cast now` : 'none needed right now',
+    sub: casting ? `${casting} of ${total} here · being cast right now` : null,
+    who: [],
+  }];
+  STAGES.forEach((s, i) => {
+    const n = counts[i];
+    cols.push({
+      id: i,
+      ramp: `pg-s${i + 1}`,
+      n,
+      badge: needs[i],
+      name: s.label,
+      cap: n ? (ready && i === 0 ? `${n} ready for your review` : s.on(n)) : s.off,
+      sub: n ? `${n} of ${total} here · ${Math.round((reached(i) / (named.length || 1)) * 100)}% reached this stage or beyond` : null,
+      who: who[i],
+    });
+  });
+
+  return (
+    <div className="pp">
+      <div className="pp-head">
+        <div>
+          <h3 className="pp-title">
+            {named.length === 0 ? 'Your crew is taking shape' : `Where your ${rows.length} creators are`}
+          </h3>
+          <p className="pp-sub">Every creator sits at the furthest stage they’ve reached.</p>
+        </div>
+        <button type="button" className="pp-seeall" onClick={() => onFilter(null)}>
+          See all creators
+        </button>
+      </div>
+      <div className="pg-grid">
+        {cols.map((c) => (
+          <div key={c.name} className={c.n ? 'pp-col' : 'pp-col pp-col--off'}>
+            {c.n ? (
+              <button
+                type="button"
+                className={`pg-stop pp-stop--btn ${c.ramp}${filter === c.id ? ' pp-stop--active' : ''}`}
+                onClick={() => onFilter(filter === c.id ? null : c.id)}
+              >
+                {c.n}
+                {c.badge > 0 && <span className="pp-badge">{c.badge}</span>}
+                <span className="pq-tip">
+                  <b className="pq-tip-title">{c.name}</b>
+                  <span className="pq-tip-sub">{c.sub}</span>
+                  {c.who.length > 0 && <span className="pq-tip-names">{c.who.join(' · ')}</span>}
+                  <span className="pq-tip-hint">{filter === c.id ? 'Click to show everyone again' : 'Click to filter the list below'}</span>
+                </span>
+              </button>
+            ) : (
+              <div className={`pg-stop pg-stop--zero ${c.ramp}`}>0</div>
+            )}
+            <div className="pp-leg-name">{c.name}</div>
+            <div className="pp-leg-cap">{c.cap}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
